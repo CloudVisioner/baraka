@@ -1,0 +1,63 @@
+import { ObjectId, Document, Model, Types } from "mongoose";
+import { MemberType, MemberStatus } from "../enums/member.enum";
+import { Session } from "express-session";
+import { Request } from "express";
+
+export interface Member {
+  _id: ObjectId;
+  memberType: MemberType;
+  memberStatus: MemberStatus;
+  memberNick: string;
+  memberPhone: string;
+  memberPassword?: string;
+  memberAddress?: string;
+  memberDesc?: string;
+  memberPoints: number;
+  memberImage?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MemberInput {
+  // What client is allowed or not while creating a member.
+  memberType?: MemberType;
+  memberStatus?: MemberStatus;
+  memberNick: string;
+  memberPhone: string;
+  memberPassword: string;
+  memberAddress?: string;
+  memberDesc?: string;
+  memberPoints?: number;
+  memberImage?: string;
+}
+
+export interface LoginInput {
+  memberNick: string;
+  memberPassword: string;
+}
+
+export interface MemberUpdateInput {
+  _id: ObjectId;
+  memberType?: MemberType;
+  memberStatus?: MemberStatus;
+  memberNick?: string;
+  memberPhone?: string;
+  memberPassword?: string;
+  memberAddress?: string;
+  memberDesc?: string;
+  memberPoints?: number;
+  memberImage?: string;
+}
+
+export interface ExtendedRequest extends Request {
+  member: Member;
+  file: Express.Multer.File;
+  files: Express.Multer.File[];
+}
+
+export interface AdminRequest extends Request {
+  member: Member;
+  session: Session & { member: Member };
+  file: Express.Multer.File;
+  files: Express.Multer.File[];
+}

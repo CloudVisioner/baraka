@@ -1,0 +1,291 @@
+.signup-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #fdfaf6 0%, #f3efe9 100%);
+  padding: 40px 20px;
+}
+
+.signup-container a {
+  text-decoration: none;
+  color: #e3c08d;
+  transition: color 0.3s ease;
+}
+
+.signup-container a:hover {
+  color: #f5d9a8;
+}
+
+.signup-container .signup-frame {
+  position: relative;
+  width: 420px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.98);
+  padding: 40px 35px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(227, 192, 141, 0.2);
+}
+
+.signup-container .signup-top {
+  margin-bottom: 30px;
+}
+
+.signup-container .signup-top span {
+  font-family: 'Baskerville', 'Libre Baskerville', 'Crimson Text', serif;
+  font-size: 36px;
+  font-weight: bold;
+  color: #3d2f1f;
+  letter-spacing: 1px;
+}
+
+.signup-container .signup-top div,
+.signup-container .signup-top p {
+  font-family: 'Baskerville', 'Garamond', serif;
+  font-size: 14px;
+  color: #6b5644;
+  margin-top: 10px;
+}
+
+.signup-container .signup-frame .sign-input-frame {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.signup-container .sign-input-frame .sign-up-frame {
+  position: relative;
+  margin-top: 20px;
+  width: 49%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-container .sign-up-frame label {
+  margin-bottom: 8px;
+  font-family: 'Baskerville', 'Garamond', serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #4a3c2e;
+  letter-spacing: 0.5px;
+}
+
+.signup-container .sign-up-frame input {
+  position: relative;
+  margin-top: 5px;
+  padding: 0 18px;
+  width: 100%;
+  height: 50px;
+  background: #f5f5dc;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px;
+  font-family: 'Baskerville', 'Garamond', serif;
+  font-size: 14px;
+  color: #2c2c2c;
+  transition: all 0.3s ease;
+}
+
+.signup-container .sign-up-frame input:focus {
+  outline: none;
+  border-color: #8b7355;
+  background: #fffef0;
+  box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+}
+
+.signup-container .sign-up-frame input::placeholder {
+  color: #a89f8d;
+  font-style: italic;
+}
+
+.signup-container .media-frame {
+  position: relative;
+  margin-top: 25px;
+  width: 100%;
+  height: 250px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.signup-container .media-frame .upload-img-frame {
+  position: relative;
+  width: 275px;
+  height: 93%;
+  display: flex;
+  border-radius: 10px;
+  border: 2px solid #d4c5a9;
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.signup-container .upload-img-frame .delete-img {
+  position: absolute;
+  width: 37px;
+  height: 37px;
+  right: 5%;
+  top: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  box-shadow: 0px 6px 15px rgba(64, 79, 104, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.signup-container .upload-img-frame .delete-img:hover {
+  transform: scale(1.1);
+}
+
+.signup-container .media-frame .upload-container {
+  position: relative;
+  margin-left: 30px;
+  width: 75%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-container .media-text {
+  font-family: 'Baskerville', 'Garamond', serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #4a3c2e;
+  letter-spacing: 0.5px;
+}
+
+.signup-container .file-box input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.signup-container .file-box label {
+  margin-bottom: 0px;
+  width: 138px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #8b7355;
+  border-radius: 0px 6px 6px 0px;
+  font-family: 'Baskerville', 'Garamond', serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 26px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.signup-container .file-box label:hover {
+  background: #6b5644;
+}
+
+.signup-container .file-box .upload-name {
+  position: relative;
+  padding: 0 18px;
+  width: 85%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  background: #f5f5dc;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px 0px 0px 6px;
+  font-family: 'Baskerville', 'Garamond', serif;
+  font-size: 14px;
+  color: #2c2c2c;
+}
+
+.signup-container .thumbnail-desc {
+  margin-top: 20px;
+  font-family: 'Baskerville', 'Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 22px;
+  color: #6b5644;
+}
+
+.signup-container .signup-btn {
+  margin-top: 30px;
+  width: 100%;
+  height: 55px;
+  background: #8b7355;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Baskerville', 'Garamond', serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 115, 85, 0.3);
+}
+
+.signup-container .signup-btn:hover {
+  background: #6b5644;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 115, 85, 0.4);
+}
+
+.signup-container .signup-btn:active {
+  transform: translateY(0px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signup-container .signup-frame {
+    width: 90%;
+    padding: 30px 25px;
+  }
+
+  .signup-container .signup-top span {
+    font-size: 28px;
+  }
+
+  .signup-container .sign-input-frame {
+    flex-direction: column;
+  }
+
+  .signup-container .sign-up-frame {
+    width: 100% !important;
+  }
+
+  .signup-container .media-frame {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .signup-container .media-frame .upload-img-frame {
+    width: 100%;
+    height: 200px;
+  }
+
+  .signup-container .media-frame .upload-container {
+    margin-left: 0;
+    margin-top: 20px;
+    width: 100%;
+  }
+}
