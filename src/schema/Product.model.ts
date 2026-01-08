@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import {
-  ProductCollection,
   ProductType,
+  ProductFormat,
   ProductStatus,
 } from "../libs/enums/product.enum";
 
@@ -15,10 +15,15 @@ const productSchema = new Schema(
       default: ProductStatus.PAUSE,
     },
 
+    productType: {
+      type: String,
+      enum: ProductType,
+    },
+
+    // Backward compatibility: old field name
     productCollection: {
       type: String,
-      enum: ProductCollection,
-      required: true,
+      enum: ProductType,
     },
 
     productName: {
@@ -36,10 +41,16 @@ const productSchema = new Schema(
       required: true,
     },
 
+    productFormat: {
+      type: String,
+      enum: ProductFormat,
+      default: ProductFormat.PAPERBACK,
+    },
+
+    // Backward compatibility: old field name
     ProductType: {
       type: String,
-      enum: ProductType,
-      default: ProductType.PAPERBACK,
+      enum: ProductFormat,
     },
 
     productDesc: {
@@ -59,8 +70,48 @@ const productSchema = new Schema(
   { timestamps: true } // data of update & create
 );
 
+// Pre-save hook to migrate old field names to new ones
+productSchema.pre('save', function(next) {
+  // Migrate productCollection to productType
+  if (this.productCollection && !this.productType) {
+    this.productType = this.productCollection;
+  }
+  // Migrate ProductType to productFormat
+  if (this.ProductType && !this.productFormat) {
+    this.productFormat = this.ProductType;
+  }
+  next();
+});
+
+// Transform when converting to object/JSON to ensure new field names are present
+productSchema.set('toJSON', {
+  transform: function(doc, ret) {
+    // Ensure new field names exist, using old names as fallback
+    if (ret.productCollection && !ret.productType) {
+      ret.productType = ret.productCollection;
+    }
+    if (ret.ProductType && !ret.productFormat) {
+      ret.productFormat = ret.ProductType;
+    }
+    return ret;
+  }
+});
+
+productSchema.set('toObject', {
+  transform: function(doc, ret) {
+    // Ensure new field names exist, using old names as fallback
+    if (ret.productCollection && !ret.productType) {
+      ret.productType = ret.productCollection;
+    }
+    if (ret.ProductType && !ret.productFormat) {
+      ret.productFormat = ret.ProductType;
+    }
+    return ret;
+  }
+});
+
 productSchema.index(
-  { productName: 1, productSize: 1, productVolume: 1 },
+  { productName: 1, productFormat: 1 },
   { unique: true }
 );
 export default mongoose.model("Product", productSchema); // making a real mongoDB collection.

@@ -4,7 +4,7 @@ import { T } from "../libs/types/common";
 import ProductService from "../models/Product.service";
 import { AdminRequest, ExtendedRequest } from "../libs/types/member";
 import { ProductInput, ProductInquiry } from "../libs/types/product";
-import { ProductCollection } from "../libs/enums/product.enum";
+import { ProductType } from "../libs/enums/product.enum";
 
 const productController: T = {};
 const productService = new ProductService();
@@ -16,15 +16,15 @@ productController.getProducts = async (req: Request, res: Response) => {
     console.log("getProducts");
 
     const query = req.query;
-    const { page, limit, order, productCollection, search } = req.query;
+    const { page, limit, order, productType, search } = req.query;
     const inquiry: ProductInquiry = {
       order: String(order),
       page: Number(page),
       limit: Number(limit),
     };
 
-    if (productCollection) {
-      inquiry.productCollection = productCollection as ProductCollection;
+    if (productType) {
+      inquiry.productType = productType as ProductType;
     }
 
     if (search) inquiry.search = String(search);

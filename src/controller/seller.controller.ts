@@ -6,12 +6,12 @@ import { MemberType } from '../libs/enums/member.enum';
 import Errors, { HttpCode, Message } from '../libs/Error';
 import makeUploader from '../libs/utils/uploader';
 
-const sellerConroller: T = {};
+const sellerController: T = {};
 const memberService = new MemberService();
 
 // controllers are all objects
 
-sellerConroller.goHome = (req: Request, res: Response) => { // translating the req and res into TypeLanguage
+sellerController.goHome = (req: Request, res: Response) => { // translating the req and res into TypeLanguage
     try {
         console.log('goHome');
         res.render('home');
@@ -22,7 +22,7 @@ sellerConroller.goHome = (req: Request, res: Response) => { // translating the r
     }
 };
 
-sellerConroller.getSignup = (req: Request, res: Response) => {
+sellerController.getSignup = (req: Request, res: Response) => {
     try {
         res.render('signup');
     } catch (err) {
@@ -32,7 +32,7 @@ sellerConroller.getSignup = (req: Request, res: Response) => {
 };
 
 
-sellerConroller.getLogin = (req: Request, res: Response) => {
+sellerController.getLogin = (req: Request, res: Response) => {
     try {
         console.log('getLogin')
         res.render('login');
@@ -45,7 +45,7 @@ sellerConroller.getLogin = (req: Request, res: Response) => {
 };
 
 
-sellerConroller.processSignup = async (req: AdminRequest, res: Response) => { // Handles the req, async (await) waiting the tasks until they are finished
+sellerController.processSignup = async (req: AdminRequest, res: Response) => { // Handles the req, async (await) waiting the tasks until they are finished
     try {
         console.log('processSignup');
         const file = req.file;
@@ -69,7 +69,7 @@ sellerConroller.processSignup = async (req: AdminRequest, res: Response) => { //
     }
 };
 
-sellerConroller.processLogin = async (req: AdminRequest, res: Response) => {
+sellerController.processLogin = async (req: AdminRequest, res: Response) => {
     try {
         console.log('processLogin');
         const input: LoginInput = req.body;
@@ -88,7 +88,7 @@ sellerConroller.processLogin = async (req: AdminRequest, res: Response) => {
 
 };
 
-sellerConroller.logout = async (req: AdminRequest, res: Response) => {
+sellerController.logout = async (req: AdminRequest, res: Response) => {
     try {
         console.log('logout')
         req.session.destroy(function () { 
@@ -102,7 +102,7 @@ sellerConroller.logout = async (req: AdminRequest, res: Response) => {
 
 };
 
-sellerConroller.getUsers = async (req: Request, res: Response) => {
+sellerController.getUsers = async (req: Request, res: Response) => {
     try {
         console.log('getUsers');
         const result = await memberService.getUsers();
@@ -115,7 +115,7 @@ sellerConroller.getUsers = async (req: Request, res: Response) => {
     }
 };
 
-sellerConroller.updateChosenUser = async (req: Request, res: Response) => {
+sellerController.updateChosenUser = async (req: Request, res: Response) => {
     try {
         console.log('updateChosenUser');
         const result = await memberService.updateChosenUser(req.body);
@@ -129,7 +129,7 @@ sellerConroller.updateChosenUser = async (req: Request, res: Response) => {
 };
 
 
-sellerConroller.checkAuthSession = async (req: AdminRequest, res: Response) => {
+sellerController.checkAuthSession = async (req: AdminRequest, res: Response) => {
     try {
         console.log('checkAuthSession')
         if (req.session?.member) res.send(`<script>alert("${req.session.member.memberNick}")</script>`);
@@ -141,7 +141,7 @@ sellerConroller.checkAuthSession = async (req: AdminRequest, res: Response) => {
 
 };
 
-sellerConroller.verifyRestaurant = (req: AdminRequest, res: Response, next: NextFunction) => {
+sellerController.verifyRestaurant = (req: AdminRequest, res: Response, next: NextFunction) => {
 
         if(req.session?.member?.memberType === MemberType.SELLER) { // filter
             req.member = req.session.member; // 
@@ -154,7 +154,7 @@ sellerConroller.verifyRestaurant = (req: AdminRequest, res: Response, next: Next
 }
 
 
-export default sellerConroller;
+export default sellerController;
 
 
 // export  memberController; if we export without export...

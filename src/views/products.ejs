@@ -6,21 +6,17 @@
   <div class="products-container">
     <div class="navigation-menu">
       <ul class="nav justify-content-center">
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link active" href="/admin/">Home</a>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/">Home</a>
         </li>
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link" href="/admin/product/all">Menu</a>
+        <li class="nav-item">
+          <a class="nav-link active" href="/admin/product/all">Menu</a>
         </li>
-        <li class="nav-item" style="cursor: pointer">
+        <li class="nav-item">
           <a class="nav-link" href="/admin/user/all">Users</a>
         </li>
-        <li
-          class="nav-item"
-          style="cursor: pointer"
-          onclick="return confirm('Do you want to logout?')"
-        >
-          <a class="nav-link" href="/admin/logout">Logout</a>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/logout" onclick="return confirm('Do you want to logout?')">Logout</a>
         </li>
       </ul>
     </div>
@@ -29,7 +25,7 @@
       <div class="board">
         <div class="dishes-table">
           <span class="new-dish-txt" style="margin-bottom: 30px">
-            RESTAURANT MENU
+            BOOK MANAGEMENT
           </span>
           <table class="table table-bordered table-hover">
             <thead class="thead-light">
@@ -37,7 +33,7 @@
                 <th scope="col">T/r</th>
                 <th scope="col">Book Name</th>
                 <th scope="col">Product Type</th>
-                <th scope="col">Product Volume</th>
+                <th scope="col">Product Format</th>
                 <th scope="col">Product Price</th>
                 <th scope="col">Product Left Count</th>
                 <th scope="col">Status</th>
@@ -48,12 +44,12 @@
             <tbody style="background: white">
               <td><%= key + 1 %></td>
               <td><%= value.productName %></td>
-              <td><%= value.productCollection %></td>
-              <td><%= value.productCollection === 'DRINK' ? value.productVolume : value.productSize %></td>
+              <td><%= value.productType || value.productCollection %></td>
+              <td><%= value.productFormat || value.ProductType %></td>
               <td><%= value.productPrice %></td>
               <td><%= value.productLeftCount %></td>
               <td>
-                <select class="spec-select new-product-status" id="<%=value.id %>">
+                <select class="spec-select new-product-status" id="<%=value._id || value.id %>">
                   <option value="PAUSE" <%= value.productStatus === 'PAUSE' ? 'selected': '' %>>PAUSE</option>
                   <option value="PROCESS" <%= value.productStatus === 'PROCESS' ? 'selected': '' %>>PROCESS</option>
                   <option value="DELETE" <%= value.productStatus === 'DELETE' ? 'selected': '' %>>DELETE</option>
@@ -79,8 +75,8 @@
           class="dish-container"
           enctype="multipart/form-data"
         >
-          <div class="long-input" style="display: flex; align-items: center">
-            <span class="new-dish-txt">NEW PRODUCT DETAIL</span>
+          <div class="long-input" style="display: flex; align-items: center; margin-bottom: 10px;">
+            <h2 style="font-size: 24px; font-weight: 600; color: var(--apple-text); letter-spacing: -0.02em; margin: 0;">Add New Book</h2>
           </div>
           <div class="login-input-frame">
             <div class="long-input">
@@ -101,7 +97,7 @@
           </div>
           <div class="half-input-frame">
             <div class="half-input">
-              <label>Book Price</label>
+              <label>Product Price</label>
               <input
                 type="number"
                 placeholder="Price"
@@ -110,7 +106,7 @@
               />
             </div>
             <div class="half-input">
-              <label>Book Left Counts</label>
+              <label>Product Left Counts</label>
               <input
                 type="number"
                 placeholder="Counts"
@@ -122,7 +118,7 @@
           <div class="half-input-frame">
             <div class="half-input">
               <label>Product Type</label>
-              <select class="product-collection" name="productCollection">
+              <select class="product-type" name="productType">
                 <option value="FICTION" selected>Fiction</option>
                 <option value="NON_FICTION">Non Fiction</option>
                 <option value="ACADEMIC">Academic</option>
@@ -131,9 +127,9 @@
               </select>
             </div>
 
-            <div class="half-input" id="product-collection">
-              <label>Dish Volume</label>
-              <select class="product-size" name="productSize">
+            <div class="half-input" id="product-format">
+              <label>Product Format</label>
+              <select class="product-format" name="productFormat">
                 <option value="PAPERBACK" selected>Paperback</option>
                 <option value="HARDCOPY">Hard Copy</option>
               </select>
@@ -146,7 +142,7 @@
           </div>
 
           <div class="img-frame">
-            <label>Book Images</label>
+            <label>Product Images</label>
             <div class="media-frame">
               <div class="upload-img-box">
                 <img src="/img/upload.svg" class="1" id="image-section-1" />

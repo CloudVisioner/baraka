@@ -26,8 +26,8 @@ class ProductService {
   public async getProducts(inquiry: ProductInquiry): Promise<Product[]> {
     const match: T = { productStatus: ProductStatus.PROCESS };
 
-    if (inquiry.productCollection)
-      match.productCollection = inquiry.productCollection;
+    if (inquiry.productType)
+      match.productType = inquiry.productType;
 
     if (inquiry.search) {
       match.productName = { $regex: new RegExp(inquiry.search, "i") };
@@ -102,6 +102,7 @@ class ProductService {
     const result = await this.productModel.find().exec();
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
 
+    // The schema transform will handle mapping old field names to new ones
     return result;
   }
 

@@ -1,7 +1,198 @@
+/* ============================================
+   APPLE-STYLE BOOKSTORE ADMIN
+   Clean, Simple, Elegant Design
+   ============================================ */
+
+:root {
+  /* Apple-inspired Color Palette */
+  --apple-blue: #007AFF;
+  --apple-blue-light: #5AC8FA;
+  --apple-gray: #F5F5F7;
+  --apple-gray-dark: #86868B;
+  --apple-text: #1D1D1F;
+  --apple-text-light: #6E6E73;
+  --nav-gold: #e3c08d;
+  --white: #FFFFFF;
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
   height: 100%;
   width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--apple-gray);
+  color: var(--apple-text);
+}
+
+/* Apple-style Navigation */
+.navigation-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 20px 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.navigation-menu .nav {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  margin: 0;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+
+.navigation-menu .nav-item {
+  margin: 0;
+}
+
+.navigation-menu .nav-link {
+  color: var(--nav-gold);
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  padding: 8px 0;
+  transition: var(--transition-smooth);
+  position: relative;
+  cursor: pointer;
+}
+
+.navigation-menu .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--nav-gold);
+  transition: width 0.3s ease;
+}
+
+.navigation-menu .nav-link:hover::after,
+.navigation-menu .nav-link.active::after {
+  width: 100%;
+}
+
+.navigation-menu .nav-link:hover {
+  color: var(--nav-gold);
+  opacity: 0.8;
+}
+
+.navigation-menu .nav-link.active {
+  color: var(--nav-gold);
+  font-weight: 500;
+}
+
+/* Apple-style Buttons */
+.btn {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.btn-primary {
+  background: var(--apple-blue);
+  color: var(--white);
+  box-shadow: var(--shadow-light);
+}
+
+.btn-primary:hover {
+  background: #e3c08d;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-danger {
+  background: #FF3B30;
+  color: var(--white);
+}
+
+.btn-danger:hover {
+  background: #D62D20;
+  transform: translateY(-1px);
+}
+
+/* Apple-style Form Elements */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: var(--transition-smooth);
+  background: var(--white);
+  color: var(--apple-text);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--apple-gray-dark);
+  opacity: 0.6;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%236E6E73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navigation-menu .nav {
+    gap: 30px;
+  }
+  
+  .navigation-menu .nav-link {
+    font-size: 16px;
+  }
 }

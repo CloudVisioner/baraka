@@ -1,26 +1,24 @@
 console.log("Products frontend javascript file");
 
 $(function () {
-  $(".product-collection").on("change", () => {
-    const selectedValue = $(".product-collection").val();
-
-    if (selectedValue === "DRINK") {
-      $("#product-collection").hide();
-      $("#product-volume").show();
-    } else {
-      $("#product-volume").hide();
-      $("#product-collection").show();
-    }
+  $(".product-type").on("change", () => {
+    const selectedValue = $(".product-type").val();
+    // Product format is always shown for books
+    $("#product-format").show();
   });
 });
 
 $("#process-btn").on("click", () => {
-  $(".dish-container").slideToggle(500);
+  $(".dish-container").slideToggle(500, function() {
+    $(this).toggleClass("show");
+  });
   $("#process-btn").css("display", "none");
 });
 
 $("#cancel-btn").on("click", () => {
-  $(".dish-container").slideToggle(100);
+  $(".dish-container").slideToggle(100, function() {
+    $(this).toggleClass("show");
+  });
   $("#process-btn").css("display", "flex");
 });
 
@@ -52,7 +50,8 @@ function validateForm() {
   const productName = $(".product-name").val();
   const productPrice = $(".product-price").val();
   const productLeftCount = $(".product-left-count").val();
-  const productCollection = $(".product-collection").val();
+  const productType = $(".product-type").val();
+  const productFormat = $(".product-format").val();
   const productDesc = $(".product-desc").val();
   const productStatus = $(".product-status").val();
 
@@ -60,7 +59,8 @@ function validateForm() {
     productName === "" ||
     productPrice === "" ||
     productLeftCount === "" ||
-    productCollection === "" ||
+    productType === "" ||
+    productFormat === "" ||
     productDesc === "" ||
     productStatus === ""
   )

@@ -7,40 +7,42 @@
     <% if(!member) { %>
     <div class="navigation-menu">
       <ul class="nav justify-content-center">
-        <li class="nav-item" style="cursor: pointer">
+        <li class="nav-item">
           <a class="nav-link active" href="/admin/">Home</a>
         </li>
-        <li class="nav-item" style="cursor: pointer">
+        <li class="nav-item">
           <a class="nav-link" href="/admin/signup">SignUp</a>
         </li>
-        <li class="nav-item" style="cursor: pointer">
+        <li class="nav-item">
           <a class="nav-link" href="/admin/login">Login</a>
         </li>
-      </ul> entire body
+      </ul>
     </div>
 
-    <div class="users-frame" style="color: #dddddd">
-      <div class="board" style="font-size: 40px">Please login first!</div>
+    <div class="users-frame">
+      <div class="board">
+        <div style="text-align: center; padding: 60px 40px; background: var(--white); border-radius: 20px; box-shadow: var(--shadow-light);">
+          <h2 style="font-size: 24px; font-weight: 600; color: var(--apple-text); margin-bottom: 16px; letter-spacing: -0.02em;">Please login first!</h2>
+          <p style="font-size: 15px; color: var(--apple-text-light); margin-bottom: 24px;">You need to be logged in to view user management.</p>
+          <a href="/admin/login" class="btn btn-primary">Go to Login</a>
+        </div>
+      </div>
     </div>
 
     <% } else { %>
     <div class="navigation-menu">
       <ul class="nav justify-content-center">
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link active" href="/admin/">Home</a>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/">Home</a>
         </li>
-        <li class="nav-item" style="cursor: pointer">
+        <li class="nav-item">
           <a class="nav-link" href="/admin/product/all">Menu</a>
         </li>
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link" href="/admin/user/all">Users</a>
+        <li class="nav-item">
+          <a class="nav-link active" href="/admin/user/all">Users</a>
         </li>
-        <li
-          class="nav-item"
-          style="cursor: pointer"
-          onclick="return confirm('Do you really want to logout?')"
-        >
-          <a class="nav-link" href="/admin/logout">Logout</a>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/logout" onclick="return confirm('Do you really want to logout?')">Logout</a>
         </li>
       </ul>
     </div>
