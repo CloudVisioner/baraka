@@ -5,6 +5,7 @@ import { AdminRequest, LoginInput, MemberInput } from '../libs/types/member';
 import { MemberType } from '../libs/enums/member.enum';
 import Errors, { HttpCode, Message } from '../libs/Error';
 import makeUploader from '../libs/utils/uploader';
+import path from 'path';
 
 const sellerController: T = {};
 const memberService = new MemberService();
@@ -52,7 +53,11 @@ sellerController.processSignup = async (req: AdminRequest, res: Response) => { /
         if(!file) throw new Errors(HttpCode.BAD_REQUEST, Message.SOMETHING_WENT_WRONG); //
 
         const newMember: MemberInput = req.body // assinging req to newMember, 
-        newMember.memberImage = file?.path
+        if (file) {
+          const uploadsBasePath = path.join(process.cwd(), 'uploads');
+          const relativePath = path.relative(uploadsBasePath, file.path);
+          newMember.memberImage = relativePath.replace(/\\/g, "/");
+        }
         newMember.memberType = MemberType.SELLER // Force member type to RESTAURANT  (newMember.memberType)
         const result = await memberService.processSignup(newMember); // Calling the service method and waits finishing
         // TODO: SESSIONS AUTHENTICATION

@@ -12,6 +12,7 @@ import session from "express-session";
 import ConnectMongoDB from 'connect-mongodb-session';
 import { T } from './libs/types/common';
 import routerAdmin from "./router-admin";
+import router from "./router";
 
 const MongoDBStore = ConnectMongoDB(session); // configuration - set up
 const store = new MongoDBStore({
@@ -23,7 +24,7 @@ const store = new MongoDBStore({
 const app = express();
 console.log('__dirname', __dirname);
 app.use(express.static(path.join(__dirname, 'public'))); //
-app.use("/uploads", express.static("./uploads")) //
+app.use("/uploads", express.static(path.join(process.cwd(), 'uploads'))) //
 app.use(express.urlencoded( {extended: true} )); //
 app.use(express.json()); // rest api
 app.use(cors({
@@ -67,6 +68,6 @@ app.set('view engine', 'ejs');
 
 /** 4-ROUTERS **/
 app.use("/admin", routerAdmin);// SSR: EJS // BRIDGES FOR APIs  // ADMIN AREA //
-// app.use("/", router);
+app.use("/", router);
 
 export default app;

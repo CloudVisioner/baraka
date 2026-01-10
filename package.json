@@ -1,7 +1,7 @@
 {
-  "name": "burak",
+  "name": "baraka",
   "version": "1.0.0",
-  "description": "This is burak project backend",
+  "description": "This is baraka project backend",
   "main": "src/server.ts",
   "scripts": {
     "start": "ts-node src/server.ts",

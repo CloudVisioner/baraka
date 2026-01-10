@@ -7,7 +7,9 @@ import {v4} from 'uuid';
 function getTargetImageStorage(address: any) {
   return multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, `./uploads/${address}`);
+      // Use path.join with process.cwd() to ensure uploads folder is at project root
+      const uploadPath = path.join(process.cwd(), 'uploads', address);
+      cb(null, uploadPath);
     },
     filename: function (req, file, cb) {
       const extension = path.parse(file.originalname).ext;
