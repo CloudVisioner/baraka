@@ -5,6 +5,7 @@ import ProductService from "../models/Product.service";
 import { AdminRequest, ExtendedRequest } from "../libs/types/member";
 import { ProductInput, ProductInquiry } from "../libs/types/product";
 import { ProductType } from "../libs/enums/product.enum";
+import path from "path";
 
 const productController: T = {};
 const productService = new ProductService();
@@ -86,9 +87,13 @@ productController.createNewProduct = async (
       throw new Errors(HttpCode.INTERNAL_SERVER_ERROR, Message.CREATE_FAILED);
 
     const data: ProductInput = req.body;
-    data.productImages = req.files?.map((ele) => {
-      return ele.path.replace(/\\/g, "/"); // data path for stroring in DB
+    if (req.files?.length) {
+      const uploadsBasePath = path.join(process.cwd(), 'uploads');
+      data.productImages = req.files.map((ele) => {
+        const relativePath = path.relative(uploadsBasePath, ele.path);
+        return relativePath.replace(/\\/g, "/"); // data path for storing in DB
     });
+    }
 
     console.log("data", data);
 
