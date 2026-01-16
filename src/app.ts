@@ -24,22 +24,12 @@ const store = new MongoDBStore({
 const app = express();
 console.log('__dirname', __dirname);
 app.use(express.static(path.join(__dirname, 'public'))); //
-// Static file serving for uploads - must be before CORS for proper headers
-app.use("/uploads", express.static(path.join(process.cwd(), 'uploads'), {
-  setHeaders: (res, filePath) => {
-    // Set CORS headers for images
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
-    res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache images for 1 year
-  }
-})) //
+app.use("/uploads", express.static(path.join(process.cwd(), 'uploads'))) //
 app.use(express.urlencoded( {extended: true} )); //
 app.use(express.json()); // rest api
 app.use(cors({
     credentials: true,
-    origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173', 'http://localhost:5174'], // Explicit frontend origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: true,
 }))
 app.use(cookieParser()); //
 
