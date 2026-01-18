@@ -32,6 +32,7 @@
               <tr class="thead-light">
                 <th scope="col">T/r</th>
                 <th scope="col">Book Name</th>
+                <th scope="col">Author Name</th>
                 <th scope="col">Product Type</th>
                 <th scope="col">Product Format</th>
                 <th scope="col">Product Price</th>
@@ -44,6 +45,7 @@
             <tbody style="background: white">
               <td><%= key + 1 %></td>
               <td><%= value.productName %></td>
+              <td><%= value.productAuthor || 'N/A' %></td>
               <td><%= value.productType || value.productCollection %></td>
               <td><%= value.productFormat || value.ProductType %></td>
               <td><%= value.productPrice %></td>
@@ -79,15 +81,6 @@
             <h2 style="font-size: 24px; font-weight: 600; color: var(--apple-text); letter-spacing: -0.02em; margin: 0;">Add New Book</h2>
           </div>
           <div class="login-input-frame">
-            <div class="long-input">
-              <label>Product Name</label>
-              <input
-                type="text"
-                placeholder="Name"
-                name="productName"
-                class="product-name"
-              />
-            </div>
             <input
               name="productStatus"
               value="PAUSE"
@@ -97,12 +90,34 @@
           </div>
           <div class="half-input-frame">
             <div class="half-input">
+              <label>Product Name</label>
+              <input
+                type="text"
+                placeholder="Name"
+                name="productName"
+                class="product-name"
+              />
+            </div>
+            <div class="half-input">
+              <label>Author Name</label>
+              <input
+                type="text"
+                placeholder="Author Name"
+                name="productAuthor"
+                class="product-author"
+              />
+            </div>
+          </div>
+          <div class="half-input-frame">
+            <div class="half-input">
               <label>Product Price</label>
               <input
                 type="number"
                 placeholder="Price"
                 name="productPrice"
                 class="product-price"
+                min="0"
+                step="0.01"
               />
             </div>
             <div class="half-input">
@@ -112,6 +127,7 @@
                 placeholder="Counts"
                 name="productLeftCount"
                 class="product-left-count"
+                min="0"
               />
             </div>
           </div>
@@ -122,7 +138,7 @@
                 <option value="FICTION" selected>Fiction</option>
                 <option value="NON_FICTION">Non Fiction</option>
                 <option value="ACADEMIC">Academic</option>
-                <option value="COMICS">Comics</option>
+                <option value="COMIC">Comic</option>
                 <option value="OTHER">Other</option>
               </select>
             </div>
@@ -135,6 +151,46 @@
               </select>
             </div>
 
+          </div>
+          <div class="half-input-frame">
+            <div class="half-input">
+              <label>Publisher</label>
+              <input
+                type="text"
+                placeholder="Publisher Name"
+                name="productPublisher"
+                class="product-publisher"
+              />
+            </div>
+            <div class="half-input">
+              <label>Publication Date</label>
+              <input
+                type="text"
+                placeholder="e.g., May 6, 2003"
+                name="productPublicationDate"
+                class="product-publication-date"
+              />
+            </div>
+          </div>
+          <div class="half-input-frame">
+            <div class="half-input">
+              <label>Language</label>
+              <select class="product-language" name="productLanguage">
+                <option value="ENGLISH" selected>English</option>
+                <option value="UZBEK">Uzbek</option>
+                <option value="RUSSIAN">Russian</option>
+              </select>
+            </div>
+            <div class="half-input">
+              <label>Page Count</label>
+              <input
+                type="number"
+                placeholder="e.g., 272"
+                name="productPageCount"
+                class="product-page-count"
+                min="0"
+              />
+            </div>
           </div>
           <div class="long-input">
             <label>Product Description</label>

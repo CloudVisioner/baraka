@@ -87,6 +87,18 @@ productController.createNewProduct = async (
       throw new Errors(HttpCode.INTERNAL_SERVER_ERROR, Message.CREATE_FAILED);
 
     const data: ProductInput = req.body;
+    
+    // Validate numeric fields - prevent negative values
+    if (data.productPrice !== undefined && Number(data.productPrice) < 0) {
+      throw new Errors(HttpCode.BAD_REQUEST, Message.NEGATIVE_PRICE);
+    }
+    if (data.productLeftCount !== undefined && Number(data.productLeftCount) < 0) {
+      throw new Errors(HttpCode.BAD_REQUEST, Message.NEGATIVE_COUNT);
+    }
+    if (data.productPageCount !== undefined && Number(data.productPageCount) < 0) {
+      throw new Errors(HttpCode.BAD_REQUEST, Message.NEGATIVE_PAGE_COUNT);
+    }
+    
     if (req.files?.length) {
       const uploadsBasePath = path.join(process.cwd(), 'uploads');
       data.productImages = req.files.map((ele) => {
@@ -119,7 +131,20 @@ productController.updateChosenProduct = async (req: Request, res: Response) => {
     const id = req.params.id; // ulr variables are in params
     console.log("req.params", req.params);
 
-    const result = await productService.updateChosenProduct(id, req.body);
+    const data = req.body;
+    
+    // Validate numeric fields - prevent negative values
+    if (data.productPrice !== undefined && Number(data.productPrice) < 0) {
+      throw new Errors(HttpCode.BAD_REQUEST, Message.NEGATIVE_PRICE);
+    }
+    if (data.productLeftCount !== undefined && Number(data.productLeftCount) < 0) {
+      throw new Errors(HttpCode.BAD_REQUEST, Message.NEGATIVE_COUNT);
+    }
+    if (data.productPageCount !== undefined && Number(data.productPageCount) < 0) {
+      throw new Errors(HttpCode.BAD_REQUEST, Message.NEGATIVE_PAGE_COUNT);
+    }
+
+    const result = await productService.updateChosenProduct(id, data);
 
     res.status(HttpCode.OK).json({ data: result });
   } catch (err) {

@@ -3,6 +3,7 @@ import {
   ProductType,
   ProductFormat,
   ProductStatus,
+  ProductLanguage,
 } from "../libs/enums/product.enum";
 
 //Schema first & code first
@@ -29,6 +30,27 @@ const productSchema = new Schema(
     productName: {
       type: String,
       required: true,
+    },
+
+    productAuthor: {
+      type: String,
+    },
+
+    productPublisher: {
+      type: String,
+    },
+
+    productPublicationDate: {
+      type: String,
+    },
+
+    productLanguage: {
+      type: String,
+      enum: ProductLanguage,
+    },
+
+    productPageCount: {
+      type: Number,
     },
 
     productPrice: {

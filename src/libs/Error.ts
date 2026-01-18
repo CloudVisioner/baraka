@@ -20,6 +20,9 @@ export enum Message {
   NO_MEMBER_NICK = "No member with that member nick!",
   NOT_AUTHENTICATED = "You are not authenticated, Please login first!",
   BLOCKED_USER = "You have been blocked, please contact admin!",
+  NEGATIVE_PRICE = "Product price cannot be negative!",
+  NEGATIVE_COUNT = "Product count cannot be negative!",
+  NEGATIVE_PAGE_COUNT = "Page count cannot be negative!",
 }
 
 class Errors extends Error {
