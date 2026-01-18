@@ -9,12 +9,6 @@ export enum ProductStatus {
   DELETE = "DELETE",
 }
 
-// export enum ProductVolume {
-//   SINGLE = "SINGLE",
-//   PART = "PART",
-//   COLLECTION = "COLLECTION",
-// }
-
 export enum ProductType {
   FICTION = "FICTION",
   NON_FICTION = "NON_FICTION",

@@ -21,8 +21,6 @@ class ProductService {
     this.viewService = new ViewService();
   }
 
-  /** SPA */
-
   public async getProducts(inquiry: ProductInquiry): Promise<Product[]> {
     const match: T = { productStatus: ProductStatus.PROCESS };
 
@@ -35,15 +33,15 @@ class ProductService {
 
     const sort: T =
       inquiry.order === "productPrice"
-        ? { [inquiry.order]: 1 } // ascending
-        : { [inquiry.order]: -1 }; // descending
+        ? { [inquiry.order]: 1 }
+        : { [inquiry.order]: -1 };
 
     const result = await this.productModel
       .aggregate([
         { $match: match },
         { $sort: sort },
         { $skip: (inquiry.page * 1 - 1) * inquiry.limit }, 
-        { $limit: inquiry.limit * 1 }, // Complex Query Pipline
+        { $limit: inquiry.limit * 1 },
       ])
       .exec();
 
@@ -53,7 +51,7 @@ class ProductService {
   }
 
   public async getProduct(
-    memberId: ObjectId | null, //??? ...!!
+    memberId: ObjectId | null,
     id: string
   ): Promise<Product> {
     const productId = shapeIntoMongooseObjectId(id);
@@ -75,19 +73,13 @@ class ProductService {
       };
       const existView = await this.viewService.checkViewExistence(input);
 
-      console.log("existView:", !!existView); // ???
       if (!existView) {
-        //Insert View
-        console.log("Planing to inset new .....");
         await this.viewService.insertMemberView(input);
-
-        //Increase Counts
-
         result = await this.productModel
           .findByIdAndUpdate(
-            productId, // filter
-            { $inc: { productViews: +1 } }, // update
-            { new: true } // option return updated data
+            productId,
+            { $inc: { productViews: +1 } },
+            { new: true }
           )
           .exec();
       }
@@ -96,13 +88,9 @@ class ProductService {
     return result;
   }
 
-  /** SSR */
-
   public async getAllProduct(): Promise<Product[]> {
     const result = await this.productModel.find().exec();
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
-
-    // The schema transform will handle mapping old field names to new ones
     return result;
   }
 
@@ -119,8 +107,7 @@ class ProductService {
     id: string,
     input: ProductInput
   ): Promise<Product> {
-    id = shapeIntoMongooseObjectId(id); // convert mongoDB object -> proper matching, cuz id is string.
-
+    id = shapeIntoMongooseObjectId(id);
     const result = await this.productModel
       .findOneAndUpdate({ _id: id }, input, { new: true })
       .exec();

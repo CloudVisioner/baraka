@@ -1,8 +1,8 @@
 export enum HttpCode {
-  OK = 200, // Numbers are static
+  OK = 200,
   CREATED = 201,
   NOT_MODIFIED = 304,
-  BAD_REQUEST = 400, // client sent invalid data
+  BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
   NOT_FOUND = 404,
@@ -35,7 +35,7 @@ class Errors extends Error {
   };
 
   constructor(statusCode: HttpCode, statusMessage: Message) {
-    super(); // calls the constructor of a parent Error. Car -> Tesla
+    super();
     this.code = statusCode;
     this.message = statusMessage;
   }

@@ -6,8 +6,6 @@ import {
   ProductLanguage,
 } from "../libs/enums/product.enum";
 
-//Schema first & code first
-
 const productSchema = new Schema(
   {
     productStatus: {
@@ -20,8 +18,6 @@ const productSchema = new Schema(
       type: String,
       enum: ProductType,
     },
-
-    // Backward compatibility: old field name
     productCollection: {
       type: String,
       enum: ProductType,
@@ -68,8 +64,6 @@ const productSchema = new Schema(
       enum: ProductFormat,
       default: ProductFormat.PAPERBACK,
     },
-
-    // Backward compatibility: old field name
     ProductType: {
       type: String,
       enum: ProductFormat,
@@ -89,16 +83,14 @@ const productSchema = new Schema(
       default: 0,
     },
   },
-  { timestamps: true } // data of update & create
+  { timestamps: true }
 );
 
 // Pre-save hook to migrate old field names to new ones
 productSchema.pre('save', function(next) {
-  // Migrate productCollection to productType
   if (this.productCollection && !this.productType) {
     this.productType = this.productCollection;
   }
-  // Migrate ProductType to productFormat
   if (this.ProductType && !this.productFormat) {
     this.productFormat = this.ProductType;
   }
@@ -108,7 +100,6 @@ productSchema.pre('save', function(next) {
 // Transform when converting to object/JSON to ensure new field names are present
 productSchema.set('toJSON', {
   transform: function(doc, ret) {
-    // Ensure new field names exist, using old names as fallback
     if (ret.productCollection && !ret.productType) {
       ret.productType = ret.productCollection;
     }
@@ -121,7 +112,6 @@ productSchema.set('toJSON', {
 
 productSchema.set('toObject', {
   transform: function(doc, ret) {
-    // Ensure new field names exist, using old names as fallback
     if (ret.productCollection && !ret.productType) {
       ret.productType = ret.productCollection;
     }
@@ -136,6 +126,5 @@ productSchema.index(
   { productName: 1, productFormat: 1 },
   { unique: true }
 );
-export default mongoose.model("Product", productSchema); // making a real mongoDB collection.
 
-// THIS IS A DATABASE BLUEPRINT FOR USERS....
+export default mongoose.model("Product", productSchema);
