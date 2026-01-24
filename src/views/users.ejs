@@ -39,7 +39,13 @@
           <a class="nav-link" href="/admin/product/all">Menu</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/admin/event/all">Events</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link active" href="/admin/user/all">Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/order/all">Orders</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/admin/logout" onclick="return confirm('Do you really want to logout?')">Logout</a>
@@ -59,6 +65,7 @@
                 <th scope="col">No</th>
                 <th scope="col">Name</th>
                 <th scope="col">Phone</th>
+                <th scope="col">Address</th>
                 <th scope="col">Status</th>
               </tr>
             </thead>
@@ -68,6 +75,7 @@
              <td><%= index+1 %></td>
              <td><%= value.memberNick %></td>
              <td><%= value.memberPhone %></td>
+             <td><%= value.memberAddress || 'N/A' %></td>
              <td style="width: 13%">
                <select class="spec-select member-status" id="<%= value._id %>">
                  <option value="ACTIVE" <%= value.memberStatus === 'ACTIVE' ? 'selected' : '' %> >ACTIVE</option>

@@ -79,7 +79,10 @@ class OrderService {
         inquiry: OrderInquiry
     ): Promise<Order[]> {
         const memberId = shapeIntoMongooseObjectId(member._id);
-        const matches = { memberId: memberId, orderStatus: inquiry.orderStatus };
+        const matches: any = { memberId: memberId };
+        if (inquiry.orderStatus) {
+            matches.orderStatus = inquiry.orderStatus;
+        }
 
         const result = await this.orderModel
             .aggregate([
@@ -116,23 +119,99 @@ class OrderService {
         input: OrderUpdateInput
     ): Promise<Order> {
         const memberId = await shapeIntoMongooseObjectId(member._id),
-            orderId = await shapeIntoMongooseObjectId(input.orderId),
-            orderStatus = input.orderStatus;
+            orderId = await shapeIntoMongooseObjectId(input.orderId);
+        
+        const updateData: any = {};
+        
+        if (input.orderStatus) {
+            updateData.orderStatus = input.orderStatus;
+        }
+        
+        if (input.paymentImage) {
+            updateData.paymentImage = input.paymentImage;
+            if (!input.orderStatus) {
+                const currentOrder = await this.orderModel.findById(orderId).exec();
+                if (currentOrder && (currentOrder.orderStatus === OrderStatus.PAUSE || currentOrder.orderStatus === OrderStatus.REJECTED)) {
+                    updateData.orderStatus = OrderStatus.PENDING;
+                }
+            }
+        }
 
         const result = await this.orderModel
             .findOneAndUpdate(
-                { memberId: memberId, _id: orderId }, //filter
-                { orderStatus: orderStatus }, //update
+                { memberId: memberId, _id: orderId },
+                updateData,
                 { new: true }
             )
             .exec();
 
-        if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.CREATE_FAILED);
+        if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
 
-
-        if (orderStatus === OrderStatus.PROCESS) {
-            await this.memberService.addUserPoint(member, 1)
+        if (updateData.orderStatus === OrderStatus.FINISH) {
+            await this.memberService.addUserPoint(member, 1);
         }
+        
+        return result;
+    }
+
+    public async getAllOrders(): Promise<Order[]> {
+        const result = await this.orderModel
+            .aggregate([
+                { $sort: { createdAt: -1 } },
+                {
+                    $lookup: {
+                        from: "orderItems",
+                        localField: "_id",
+                        foreignField: "orderId",
+                        as: "orderItems",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "products",
+                        localField: "orderItems.productId",
+                        foreignField: "_id",
+                        as: "productData",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "members",
+                        localField: "memberId",
+                        foreignField: "_id",
+                        as: "memberData",
+                    },
+                },
+                {
+                    $unwind: {
+                        path: "$memberData",
+                        preserveNullAndEmptyArrays: true,
+                    },
+                },
+            ])
+            .exec();
+
+        if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+
+        return result;
+    }
+
+    public async updateOrderStatus(
+        orderId: string,
+        orderStatus: OrderStatus
+    ): Promise<Order> {
+        const id = shapeIntoMongooseObjectId(orderId);
+        
+        const result = await this.orderModel
+            .findByIdAndUpdate(
+                { _id: id },
+                { orderStatus: orderStatus },
+                { new: true }
+            )
+            .exec();
+
+        if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
+
         return result;
     }
 }

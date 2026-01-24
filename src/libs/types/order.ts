@@ -18,11 +18,13 @@ export interface Order {
   orderDelivery: number;
   orderStatus: OrderStatus;
   memberId: ObjectId;
+  paymentImage?: string;
   createdAt: Date;
   updatedAt: Date;
   /** from aggregations **/
   orderItems: OrderItem[];
   productData: Product[];
+  memberData?: any;
 }
 
 export interface OrderItemInput {
@@ -41,6 +43,7 @@ export interface OrderInquiry {
 export interface OrderUpdateInput {
   orderId: string;
   orderStatus: OrderStatus;
+  paymentImage?: string;
 }
 
 

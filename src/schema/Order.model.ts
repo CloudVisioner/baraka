@@ -21,10 +21,12 @@ const orderSchema = new Schema({
     memberId: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: "Member" //????
+        ref: "Member"
+    },
+
+    paymentImage: {
+        type: String,
     }
-
-
 
 }, { timestamps: true }
 );

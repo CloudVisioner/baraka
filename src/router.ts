@@ -3,6 +3,7 @@ import memberController from "./controller/member.controller";
 import uploader from "./libs/utils/uploader";
 import productController from "./controller/product.controller";
 import orderController from "./controller/order.controller";
+import eventController from "./controller/event.controller";
 
 const router = express.Router();
 
@@ -61,7 +62,14 @@ router.get(
 router.post(
   "/order/update",
   memberController.verifyAuth,
+  uploader("payments").single("paymentImage"),
   orderController.updateOrder
 );
+
+// Events //
+
+router.get("/event/all", eventController.getAllEvents);
+
+router.get("/event/:id", eventController.getEvent);
 
 export default router;

@@ -1,0 +1,194 @@
+<%- include('includes/header') %>
+
+<link rel="stylesheet" type="text/css" href="/css/products.css" />
+
+<body>
+  <div class="products-container">
+    <div class="navigation-menu">
+      <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/product/all">Menu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/admin/event/all">Events</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/user/all">Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/order/all">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/logout" onclick="return confirm('Do you want to logout?')">Logout</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="restaurant-menu-frame">
+      <div class="board">
+        <div class="dishes-table">
+          <span class="new-dish-txt" style="margin-bottom: 30px">
+            EVENT MANAGEMENT
+          </span>
+          <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+              <tr class="thead-light">
+                <th scope="col">T/r</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+                <th scope="col">Location</th>
+                <th scope="col">Host</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <% if (events && events.length > 0) { %>
+              <% events.map(function(value, key) { %>
+              <tbody style="background: white">
+                <td><%= key + 1 %></td>
+                <td><%= value.title %></td>
+                <td><%= value.desc.length > 50 ? value.desc.substring(0, 50) + '...' : value.desc %></td>
+                <td><%= value.date %></td>
+                <td><%= value.location %></td>
+                <td><%= value.host || 'N/A' %></td>
+                <td>
+                  <button class="btn btn-sm btn-danger delete-event-btn" data-id="<%= value._id %>">Delete</button>
+                </td>
+              </tbody>
+              <% }) %>
+            <% } else { %>
+              <tbody style="background: white">
+                <td colspan="7" style="text-align: center; padding: 20px;">No events found</td>
+              </tbody>
+            <% } %>
+          </table>
+          <div
+            class="long-input"
+            style="align-items: flex-end; margin-bottom: 25px"
+          >
+            <button class="btn btn-primary" id="process-btn">
+              New Event
+            </button>
+          </div>
+        </div>
+
+        <form
+          onsubmit="return validateEventForm()"
+          action="/admin/event/create"
+          method="POST"
+          class="dish-container"
+          enctype="multipart/form-data"
+        >
+          <div class="long-input" style="display: flex; align-items: center; margin-bottom: 10px;">
+            <h2 style="font-size: 24px; font-weight: 600; color: var(--apple-text); letter-spacing: -0.02em; margin: 0;">Add New Event</h2>
+          </div>
+          
+          <div class="long-input">
+            <label>Event Title <span style="color: #999;">(max 80 chars)</span></label>
+            <input
+              type="text"
+              placeholder="Event Title"
+              name="title"
+              class="event-title"
+              maxlength="80"
+              required
+            />
+          </div>
+
+          <div class="long-input">
+            <label>Short Description <span style="color: #999;">(max 150 chars, shown on card)</span></label>
+            <textarea
+              name="desc"
+              class="event-desc"
+              maxlength="150"
+              placeholder="Short description for card preview"
+              required
+            ></textarea>
+          </div>
+
+          <div class="long-input">
+            <label>Full Description <span style="color: #999;">(max 1000 chars, shown in modal)</span></label>
+            <textarea
+              name="fullDesc"
+              class="event-full-desc"
+              maxlength="1000"
+              placeholder="Full description shown when 'Learn More' is clicked"
+              required
+            ></textarea>
+          </div>
+
+          <div class="half-input-frame">
+            <div class="half-input">
+              <label>Date & Time <span style="color: #999;">(max 50 chars)</span></label>
+              <input
+                type="text"
+                placeholder="e.g., March 15, 2024, 6:00 PM"
+                name="date"
+                class="event-date"
+                maxlength="50"
+                required
+              />
+            </div>
+            <div class="half-input">
+              <label>Location <span style="color: #999;">(max 100 chars)</span></label>
+              <input
+                type="text"
+                placeholder="e.g., Baraka Books, Main Branch"
+                name="location"
+                class="event-location"
+                maxlength="100"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="long-input">
+            <label>Host/Organizer <span style="color: #999;">(optional, max 100 chars)</span></label>
+            <input
+              type="text"
+              placeholder="e.g., Baraka Books Team, Local Writers Guild"
+              name="host"
+              class="event-host"
+              maxlength="100"
+            />
+          </div>
+
+          <div class="img-frame">
+            <label>Event Image</label>
+            <div class="media-frame">
+              <div class="upload-img-box">
+                <img src="/img/upload.svg" class="event-img" id="event-image-section" />
+                <input
+                  type="file"
+                  id="event-file"
+                  name="img"
+                  class="event-image-input"
+                  required
+                  accept="image/jpeg,image/jpg,image/png,image/webp"
+                  onchange="previewEventImage(this)"
+                />
+              </div>
+            </div>
+            <small style="color: #999; display: block; margin-top: 10px;">
+              Recommended: 720px × 405px (16:9) or 4:3 aspect ratio. Format: JPG, PNG, or WebP. Optimized for web (&lt;200KB).
+            </small>
+          </div>
+
+          <div class="operation-buttons">
+            <button type="button" class="btn btn-danger" id="cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="create-btn">
+              Create Event
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="/js/events.js"></script>
+</body>
+
+<%- include('includes/footer') %>

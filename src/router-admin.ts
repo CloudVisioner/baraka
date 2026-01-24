@@ -1,7 +1,9 @@
 import express from 'express';
-const routerAdmin = express.Router(); // Tells express that which controller should handle each URL request.
+const routerAdmin = express.Router();
 import restaurantController from './controller/seller.controller';
 import productController from './controller/product.controller';
+import eventController from './controller/event.controller';
+import orderController from './controller/order.controller';
 import  makeUploader from './libs/utils/uploader';
 // import {memberController} from './controller/member.controller'; then we import with {}. If you export wihout default you wont use {}
 
@@ -35,5 +37,39 @@ routerAdmin.post("/product/:id", productController.updateChosenProduct) // id - 
 /* Users */
 routerAdmin.get("/user/all", restaurantController.verifyRestaurant, restaurantController.getUsers);
 routerAdmin.post("/user/edit", restaurantController.verifyRestaurant, restaurantController.updateChosenUser);
+
+/* Events */
+routerAdmin.get("/event/all", 
+    restaurantController.verifyRestaurant, 
+    eventController.getAllEventsAdmin
+);
+routerAdmin.post("/event/create",
+    restaurantController.verifyRestaurant, 
+    makeUploader("events").single("img"),
+    eventController.createNewEvent
+);
+routerAdmin.post("/event/:id", 
+    restaurantController.verifyRestaurant,
+    makeUploader("events").single("img"),
+    eventController.updateChosenEvent
+);
+routerAdmin.delete("/event/:id", 
+    restaurantController.verifyRestaurant,
+    eventController.deleteChosenEvent
+);
+
+/* Orders */
+routerAdmin.get("/order/all", 
+    restaurantController.verifyRestaurant, 
+    orderController.getAllOrdersAdmin
+);
+routerAdmin.post("/order/approve",
+    restaurantController.verifyRestaurant,
+    orderController.approveOrder
+);
+routerAdmin.post("/order/reject",
+    restaurantController.verifyRestaurant,
+    orderController.rejectOrder
+);
 
 export default routerAdmin;
