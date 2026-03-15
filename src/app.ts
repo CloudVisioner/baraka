@@ -13,6 +13,8 @@ import ConnectMongoDB from 'connect-mongodb-session';
 import { T } from './libs/types/common';
 import routerAdmin from "./router-admin";
 import router from "./router";
+import { Server as SocketIOServer } from "socket.io";
+import http from 'http';
 
 const MongoDBStore = ConnectMongoDB(session); // configuration - set up
 const store = new MongoDBStore({
@@ -25,7 +27,7 @@ const app = express();
 console.log('__dirname', __dirname);
 app.use(express.static(path.join(__dirname, 'public'))); //
 app.use("/uploads", express.static(path.join(process.cwd(), 'uploads'))) //
-app.use(express.urlencoded( {extended: true} )); //
+app.use(express.urlencoded({ extended: true })); //
 app.use(express.json()); // rest api
 app.use(cors({
     credentials: true,
@@ -33,7 +35,7 @@ app.use(cors({
 }))
 app.use(cookieParser()); //
 
-app.use(morgan(MORGAN_FORMAT)); 
+app.use(morgan(MORGAN_FORMAT));
 
 
 
@@ -46,7 +48,7 @@ app.use( // building part
             maxAge: 1000 * 3600 * 6, //6h 
         },
         store: store,
-        resave: true, 
+        resave: true,
         saveUninitialized: true,
     })
 );
@@ -54,7 +56,7 @@ app.use( // building part
 
 // req + session
 
-app.use(function(req, res, next) { // next() allows to proceed to the next middleware
+app.use(function (req, res, next) { // next() allows to proceed to the next middleware
     const sessionInstance = req.session as T; // session data for each member with a type
     res.locals.member = sessionInstance.member; // res locals temporary req only exists for this req
     // locals is a storage is of resProducts of Zara
@@ -70,4 +72,24 @@ app.set('view engine', 'ejs');
 app.use("/admin", routerAdmin);// SSR: EJS // BRIDGES FOR APIs  // ADMIN AREA //
 app.use("/", router);
 
-export default app;
+const server = http.createServer(app);
+const io = new SocketIOServer(server, {
+    cors: {
+        origin: true,
+        credentials: true,
+    },
+});
+
+let summaryClient = 0;
+io.on("connection", (socket) => {
+    summaryClient++;
+    console.log(`Connection & total [${summaryClient}]`);
+
+    socket.on("disconnect", () => {
+        summaryClient--;
+        console.log(`Disconnection & total [${summaryClient}]`);
+    });
+});
+
+
+export default server;

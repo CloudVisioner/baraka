@@ -51,7 +51,7 @@ orderController.updateOrder = async (req: ExtendedRequest, res: Response) => {
   try {
     res.set('Cache-Control', 'no-store');
     res.set('ETag', '');
-    
+
     const input: OrderUpdateInput = req.body;
     
     if (req.file) {
