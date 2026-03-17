@@ -8,7 +8,7 @@
     "start:dev": "nodemon --exec ts-node src/server.ts",
     "train": "nodemon --exec ts-node src/train.js",
     "build": "tsc && node extra.js",
-    "start:prod": "NODE_ENV=production PORT=3004 node dist/server.js",
+    "start:prod": "node dist/server.js",
     "dev": "nodemon train.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
