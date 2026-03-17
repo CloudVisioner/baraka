@@ -41,17 +41,17 @@ app.use(morgan(MORGAN_FORMAT));
 
 /** 2-SESSIONS **/ // Authentication vs Authorization = kimligi + huquq //
 
-app.use( // building part
-    session({ // session DATA
-        secret: String(process.env.SESSION_SECRET),
-        cookie: {
-            maxAge: 1000 * 3600 * 6, //6h 
-        },
-        store: store,
-        resave: true,
-        saveUninitialized: true,
-    })
-);
+const sessionMiddleware = session({
+    secret: String(process.env.SESSION_SECRET),
+    cookie: {
+        maxAge: 1000 * 3600 * 6, //6h 
+    },
+    store: store,
+    resave: true,
+    saveUninitialized: true,
+});
+
+app.use(sessionMiddleware as any);
 
 
 // req + session
