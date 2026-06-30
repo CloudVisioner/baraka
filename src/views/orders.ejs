@@ -1,0 +1,208 @@
+<%- include('includes/header') %>
+
+<link rel="stylesheet" type="text/css" href="/css/products.css" />
+
+<body>
+  <div class="products-container">
+    <div class="navigation-menu">
+      <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/product/all">Menu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/event/all">Events</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/user/all">Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/admin/order/all">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/logout" onclick="return confirm('Do you want to logout?')">Logout</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="restaurant-menu-frame">
+      <div class="board">
+        <div class="dishes-table">
+          <span class="new-dish-txt" style="margin-bottom: 30px">
+            ORDER MANAGEMENT
+          </span>
+          
+          <% if (orders && orders.length > 0) { %>
+            <% orders.map(function(order, index) { %>
+              <div style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e5e5e5;">
+                  <div>
+                    <h3 style="font-size: 18px; font-weight: 600; color: #1d1d1f; margin: 0 0 8px 0;">Order #<%= index + 1 %></h3>
+                    <p style="font-size: 13px; color: #86868b; margin: 0;">Order ID: <%= order._id %></p>
+                    <p style="font-size: 13px; color: #86868b; margin: 4px 0 0 0;">
+                      Date: <%= new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %>
+                    </p>
+                  </div>
+                  <div style="text-align: right;">
+                    <span style="display: inline-block; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; 
+                      background: <%= order.orderStatus === 'PAUSE' ? '#ff9500' : order.orderStatus === 'PENDING' ? '#ffa500' : order.orderStatus === 'PROCESS' ? '#007aff' : order.orderStatus === 'REJECTED' ? '#ff3b30' : order.orderStatus === 'FINISH' ? '#34c759' : '#86868b' %>; 
+                      color: white;">
+                      <%= order.orderStatus === 'DELETE' ? 'DELETED' : order.orderStatus %>
+                    </span>
+                    <p style="font-size: 16px; font-weight: 600; color: #1d1d1f; margin: 8px 0 0 0;">
+                      Total: $<%= order.orderTotal.toFixed(2) %>
+                    </p>
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <h4 style="font-size: 15px; font-weight: 600; color: #1d1d1f; margin: 0 0 12px 0;">Customer Information</h4>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                    <div>
+                      <p style="font-size: 12px; color: #86868b; margin: 0 0 4px 0;">Name</p>
+                      <p style="font-size: 14px; color: #1d1d1f; margin: 0; font-weight: 500;">
+                        <%= order.memberData ? order.memberData.memberNick : 'N/A' %>
+                      </p>
+                    </div>
+                    <div>
+                      <p style="font-size: 12px; color: #86868b; margin: 0 0 4px 0;">Phone</p>
+                      <p style="font-size: 14px; color: #1d1d1f; margin: 0; font-weight: 500;">
+                        <%= order.memberData ? order.memberData.memberPhone : 'N/A' %>
+                      </p>
+                    </div>
+                    <div>
+                      <p style="font-size: 12px; color: #86868b; margin: 0 0 4px 0;">Address</p>
+                      <p style="font-size: 14px; color: #1d1d1f; margin: 0; font-weight: 500;">
+                        <%= order.memberData && order.memberData.memberAddress ? order.memberData.memberAddress : 'N/A' %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <h4 style="font-size: 15px; font-weight: 600; color: #1d1d1f; margin: 0 0 12px 0;">Order Items</h4>
+                  <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <% if (order.orderItems && order.orderItems.length > 0) { %>
+                      <% order.orderItems.forEach(function(item, itemIndex) { %>
+                        <% 
+                          const product = order.productData ? order.productData.find(p => p._id.toString() === item.productId.toString()) : null;
+                        %>
+                        <div style="display: flex; align-items: center; gap: 16px; padding: 12px; background: #f5f5f7; border-radius: 8px;">
+                          <% if (product && product.productImages && product.productImages.length > 0) { %>
+                            <img src="/uploads/<%= product.productImages[0] %>" 
+                                 alt="<%= product.productName %>" 
+                                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;" />
+                          <% } else { %>
+                            <div style="width: 60px; height: 60px; background: #e5e5e5; border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+                              <span style="font-size: 24px;">📦</span>
+                            </div>
+                          <% } %>
+                          <div style="flex: 1;">
+                            <p style="font-size: 14px; font-weight: 500; color: #1d1d1f; margin: 0 0 4px 0;">
+                              <%= product ? product.productName : 'Product Not Found' %>
+                            </p>
+                            <p style="font-size: 12px; color: #86868b; margin: 0;">
+                              Quantity: <%= item.itemQuantity %> × $<%= item.itemPrice.toFixed(2) %> = $<%= (item.itemQuantity * item.itemPrice).toFixed(2) %>
+                            </p>
+                          </div>
+                        </div>
+                      <% }) %>
+                    <% } else { %>
+                      <p style="font-size: 14px; color: #86868b; margin: 0;">No items found</p>
+                    <% } %>
+                  </div>
+                </div>
+
+                <% if (order.paymentImage) { %>
+                  <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 15px; font-weight: 600; color: #1d1d1f; margin: 0 0 12px 0;">Payment Proof</h4>
+                    <div style="display: inline-block;">
+                      <a href="/uploads/<%= order.paymentImage %>" target="_blank">
+                        <img src="/uploads/<%= order.paymentImage %>" 
+                             alt="Payment Proof" 
+                             style="max-width: 300px; max-height: 300px; border-radius: 8px; border: 1px solid #e5e5e5; cursor: pointer;" />
+                      </a>
+                    </div>
+                  </div>
+                <% } else { %>
+                  <div style="margin-bottom: 20px; padding: 16px; background: #fff3cd; border-radius: 8px; border: 1px solid #ffc107;">
+                    <p style="font-size: 14px; color: #856404; margin: 0;">
+                      ⚠️ Payment proof not uploaded yet
+                    </p>
+                  </div>
+                <% } %>
+
+                <div style="display: flex; gap: 12px; padding-top: 16px; border-top: 1px solid #e5e5e5;">
+                  <div style="flex: 1;">
+                    <p style="font-size: 12px; color: #86868b; margin: 0 0 4px 0;">Subtotal</p>
+                    <p style="font-size: 14px; color: #1d1d1f; margin: 0;">$<%= (order.orderTotal - order.orderDelivery).toFixed(2) %></p>
+                  </div>
+                  <div style="flex: 1;">
+                    <p style="font-size: 12px; color: #86868b; margin: 0 0 4px 0;">Delivery</p>
+                    <p style="font-size: 14px; color: #1d1d1f; margin: 0;">$<%= order.orderDelivery.toFixed(2) %></p>
+                  </div>
+                  <div style="flex: 1; text-align: right;">
+                    <p style="font-size: 12px; color: #86868b; margin: 0 0 4px 0;">Total</p>
+                    <p style="font-size: 18px; font-weight: 600; color: #1d1d1f; margin: 0;">$<%= order.orderTotal.toFixed(2) %></p>
+                  </div>
+                </div>
+
+                <% if (order.orderStatus === 'PENDING') { %>
+                  <div style="display: flex; gap: 12px; padding-top: 16px; border-top: 1px solid #e5e5e5; margin-top: 16px;">
+                    <button 
+                      class="btn btn-success approve-order-btn" 
+                      data-order-id="<%= order._id.toString() %>"
+                      style="flex: 1; background: linear-gradient(135deg, #34c759 0%, #30d158 100%); color: white; border: none; padding: 14px 20px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3); letter-spacing: 0.3px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                      <span style="font-size: 18px;">✓</span>
+                      <span>Approve</span>
+                    </button>
+                    <button 
+                      class="btn btn-danger reject-order-btn" 
+                      data-order-id="<%= order._id.toString() %>"
+                      style="flex: 1; background: linear-gradient(135deg, #ff3b30 0%, #ff453a 100%); color: white; border: none; padding: 14px 20px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(255, 59, 48, 0.3); letter-spacing: 0.3px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                      <span style="font-size: 18px;">✗</span>
+                      <span>Reject</span>
+                    </button>
+                  </div>
+                <% } else if (order.orderStatus === 'PAUSE' || order.orderStatus === 'REJECTED') { %>
+                  <div style="padding-top: 16px; border-top: 1px solid #e5e5e5; margin-top: 16px;">
+                    <div style="display: flex; align-items: center; gap: 8px; padding: 12px; background: #fff3cd; border-radius: 8px; border: 1px solid #ffc107;">
+                      <span style="font-size: 18px;">⏳</span>
+                      <p style="margin: 0; font-size: 14px; color: #856404; font-weight: 500;">
+                        <%= order.orderStatus === 'PAUSE' ? 'Waiting for payment proof' : 'Payment rejected - customer can re-upload' %>
+                      </p>
+                    </div>
+                  </div>
+                <% } else if (order.orderStatus === 'PROCESS') { %>
+                  <div style="padding-top: 16px; border-top: 1px solid #e5e5e5; margin-top: 16px;">
+                    <div style="display: flex; align-items: center; gap: 8px; padding: 12px; background: #d1ecf1; border-radius: 8px; border: 1px solid #bee5eb;">
+                      <span style="font-size: 18px;">✓</span>
+                      <p style="margin: 0; font-size: 14px; color: #0c5460; font-weight: 500;">Order approved - being processed</p>
+                    </div>
+                  </div>
+                <% } else if (order.orderStatus === 'FINISH') { %>
+                  <div style="padding-top: 16px; border-top: 1px solid #e5e5e5; margin-top: 16px;">
+                    <div style="display: flex; align-items: center; gap: 8px; padding: 12px; background: #d4edda; border-radius: 8px; border: 1px solid #c3e6cb;">
+                      <span style="font-size: 18px;">✓</span>
+                      <p style="margin: 0; font-size: 14px; color: #155724; font-weight: 500;">Order completed - customer confirmed receipt</p>
+                    </div>
+                  </div>
+                <% } %>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <div style="text-align: center; padding: 60px 40px; background: white; border-radius: 12px;">
+              <p style="font-size: 16px; color: #86868b; margin: 0;">No orders found</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="/js/orders.js"></script>
+</body>
+
+<%- include('includes/footer') %>

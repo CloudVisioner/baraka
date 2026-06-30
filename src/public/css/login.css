@@ -1,0 +1,108 @@
+/* ============================================
+   LOGIN PAGE - APPLE STYLE
+   ============================================ */
+
+.login-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--apple-gray);
+  padding: 40px 20px;
+}
+
+.login-container .login-frame {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 48px 40px;
+  box-shadow: var(--shadow-medium);
+}
+
+.login-container .login-frame .login-top {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.login-container .login-top span {
+  display: block;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--apple-text);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.login-container .login-top div,
+.login-container .login-top p {
+  font-size: 15px;
+  color: var(--apple-text-light);
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.login-container .login-frame .login-input-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.login-container .login-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.login-container .login-input-container label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--apple-text);
+  letter-spacing: -0.01em;
+}
+
+.login-container .login-frame .login-btn {
+  margin-top: 8px;
+  width: 100%;
+  height: 50px;
+  background: var(--apple-blue);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  letter-spacing: -0.01em;
+}
+
+.login-container .login-frame .login-btn:hover {
+  background: #0051D5;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-medium);
+}
+
+.login-container a {
+  color: var(--apple-blue);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+
+.login-container a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-container .login-frame {
+    padding: 40px 30px;
+  }
+
+  .login-container .login-top span {
+    font-size: 28px;
+  }
+}
